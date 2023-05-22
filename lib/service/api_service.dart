@@ -34,4 +34,34 @@ class ApiService {
       throw Exception('Failed to load books');
     }
   }
+
+  Future<List<Book>> getBooksByCategory(String category) async {
+    final api_key = "AIzaSyD_6iFIRzBVpFzRFR2mvU8jjUUWXiJaAFw";
+    final url = Uri.parse('$_baseUrl?q=subject:$category&key=$api_key');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+
+      final List<Book> books = [];
+      final List<dynamic> items = json['items'];
+
+      for (final item in items) {
+        final volumeInfo = item['volumeInfo'];
+
+        final book = Book(
+          title: volumeInfo['title'] ?? '',
+          author: volumeInfo['authors']?.join(', ') ?? '',
+          description: volumeInfo['description'] ?? '',
+          thumbnailUrl: volumeInfo['imageLinks']?['thumbnail'] ?? '',
+        );
+
+        books.add(book);
+      }
+
+      return books;
+    } else {
+      throw Exception('Failed to load books');
+    }
+  }
 }

@@ -9,20 +9,23 @@ import 'package:stock_app/db/database_helper.dart';
 
 import '../models/user.dart';
 
-class LoginPageState extends StatefulWidget {
-  const LoginPageState({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+  static const routeName = '/login_page';
 
   @override
-  LoginPage createState() => LoginPage();
+  LoginPageState createState() => LoginPageState();
 }
 
-class LoginPage extends State<LoginPageState> {
+class LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   void _goToHomePage(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) =>  BookSearchPage()));
+    Navigator.pushReplacementNamed(
+      context,
+      HomePage.routeName,
+    );
   }
 
   Future<void> _login() async {
@@ -67,7 +70,7 @@ class LoginPage extends State<LoginPageState> {
       }
     } else {
       // User not found
-        showDialog(
+      showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Failed'),
@@ -84,70 +87,69 @@ class LoginPage extends State<LoginPageState> {
     }
   }
 
-
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text('Login Page'),
-      automaticallyImplyLeading: false, // hide back button
-    ),
-    body: Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Login', style: TextStyle(fontSize: 30)),
-              const SizedBox(height: 32.0),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: TextField(
-                  controller: usernameController,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your username',
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login Page'),
+        automaticallyImplyLeading: false, // hide back button
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Login', style: TextStyle(fontSize: 30)),
+                const SizedBox(height: 32.0),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: TextField(
+                    controller: usernameController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your username',
+                      border: OutlineInputBorder(),
+                      labelText: 'Username',
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: TextField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your password',
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    
+                const SizedBox(height: 16.0),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: TextField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your password',
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 32.0),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.5,
-                child: ElevatedButton(
-                  child: const Text('Login'),
-                  onPressed: _login,
+                const SizedBox(height: 32.0),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: ElevatedButton(
+                    child: const Text('Login'),
+                    onPressed: _login,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              TextButton(
-                child: const Text('Register'),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RegisterPage()));
-                },
-              ),
-            ],
+                const SizedBox(height: 16.0),
+                TextButton(
+                  child: const Text('Register'),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      RegisterPage.routeName,
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 }

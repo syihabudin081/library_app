@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:stock_app/db/database_helper.dart';
 import 'package:stock_app/models/user.dart';
-import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:stock_app/pages/loginPage.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
-
+  static const routeName = '/register_page';
   @override
   RegisterPageState createState() => RegisterPageState();
 }
@@ -46,7 +45,7 @@ class RegisterPageState extends State<RegisterPage> {
             ],
           ),
         );
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPageState()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPage()));
       } catch (e) {
         showDialog(
           context: context,

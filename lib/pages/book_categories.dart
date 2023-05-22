@@ -1,29 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:stock_app/pages/homePage.dart';
 import 'package:stock_app/service/api_service.dart';
+import 'package:stock_app/models/book.dart';
 
-import '../models/book.dart';
-
-class BookSearchPage extends StatefulWidget {
-  const BookSearchPage({Key? key}) : super(key: key);
-  static const routeName = '/book_search';
+class BookCategories extends StatefulWidget {
+  const BookCategories({Key? key}) : super(key: key);
+  static const routeName = '/book_categories';
   @override
-  BookSearchPageState createState() => BookSearchPageState();
+  BookCategoriesState createState() => BookCategoriesState();
 }
 
-class BookSearchPageState extends State<BookSearchPage> {
-  final TextEditingController _searchController = TextEditingController();
+class BookCategoriesState extends State<BookCategories>{
   final ApiService _apiService = ApiService();
   List<Book> _books = [];
   bool _isLoading = false;
+  String _category = '';
 
-  void _searchBooks(String query) async {
+  void _changeCategory(String category){
+    setState(() {
+      _category = category;
+      _getCategory();
+    });
+  }
+
+  void _getCategory() {
+    switch (_category) {
+      case 'Computers':
+        return _getBooks(_category);
+      case 'Fiction':
+        return _getBooks(_category);
+      default:
+        return _getBooks(_category);;
+    }
+  }
+  void _getBooks(String category) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final books = await _apiService.searchBooks(query);
+      final books = await _apiService.getBooksByCategory(category);
       setState(() {
         _books = books;
       });
@@ -38,12 +53,6 @@ class BookSearchPageState extends State<BookSearchPage> {
   }
 
   @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -51,20 +60,20 @@ class BookSearchPageState extends State<BookSearchPage> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                labelText: 'Search books',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    _searchBooks(_searchController.text);
-                  },
-                ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () => _changeCategory('Computers'),
+                child: const Text('Computers'),
               ),
-            ),
+              const SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: () => _changeCategory('Fiction'),
+                child: const Text('Fiction'),
+              ),
+              const SizedBox(height: 16),
+            ],
           ),
           if (_isLoading)
             CircularProgressIndicator()
@@ -100,7 +109,4 @@ class BookSearchPageState extends State<BookSearchPage> {
       ),
     );
   }
-
-
-
 }
