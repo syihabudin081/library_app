@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_app/pages/bookDetail.dart';
 import 'package:stock_app/pages/homePage.dart';
 import 'package:stock_app/service/api_service.dart';
 
@@ -41,7 +42,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
     super.dispose();
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -88,6 +89,11 @@ class _BookSearchPageState extends State<BookSearchPage> {
                       subtitle: Text(book.author),
                       onTap: () {
                         // Handle book tap
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BookDetailPage(book: book)));
                       },
                     ),
                   );
@@ -98,7 +104,5 @@ class _BookSearchPageState extends State<BookSearchPage> {
       ),
     );
   }
-
-
-
 }
+
