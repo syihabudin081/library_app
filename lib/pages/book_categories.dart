@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:stock_app/common/styles.dart';
-import 'package:stock_app/pages/bookDetail.dart';
+import 'package:stock_app/pages/book_detail.dart';
 import 'package:stock_app/service/api_service.dart';
 import 'package:stock_app/models/book.dart';
 
@@ -25,7 +26,7 @@ class BookCategoriesState extends State<BookCategories> {
     });
   }
 
-  void _getCategory() {
+  Future <void> _getCategory() {
     switch (_category) {
       case 'Computers':
         return _getBooks(_category);
@@ -33,11 +34,11 @@ class BookCategoriesState extends State<BookCategories> {
         return _getBooks(_category);
       default:
         return _getBooks(_category);
-        ;
+
     }
   }
 
-  void _getBooks(String category) async {
+  Future <void> _getBooks(String category) async {
     setState(() {
       _isLoading = true;
     });

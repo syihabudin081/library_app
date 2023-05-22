@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stock_app/pages/bestSellersBook.dart';
-import 'package:stock_app/pages/bookCategories.dart';
-import 'package:stock_app/pages/bookSearchPage.dart';
+import 'package:stock_app/pages/best_seller_books.dart';
+import 'package:stock_app/pages/book_categories.dart';
+import 'package:stock_app/pages/book_search.dart';
 import 'package:stock_app/common/styles.dart';
-import 'package:stock_app/pages/profilePage.dart';
+import 'package:stock_app/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

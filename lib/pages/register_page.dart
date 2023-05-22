@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:stock_app/common/styles.dart';
 import 'package:stock_app/db/database_helper.dart';
-import 'package:stock_app/pages/loginPage.dart';
+import 'package:stock_app/pages/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class RegisterPageState extends State<RegisterPage> {
     _databaseHelper = DatabaseHelper();
   }
 
-  void _register() async {
+  Future <void> _register() async {
     String name = _nameController.text;
     String username = _usernameController.text.trim();
     String password = _passwordController.text;

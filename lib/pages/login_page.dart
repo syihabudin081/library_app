@@ -1,9 +1,8 @@
-// ignore_for_file: file_names
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:stock_app/common/styles.dart';
-import 'package:stock_app/pages/homePage.dart';
-import 'package:stock_app/pages/registerPage.dart';
+import 'package:stock_app/pages/home_page.dart';
+import 'package:stock_app/pages/register_page.dart';
 import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:stock_app/db/database_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +28,7 @@ class LoginPageState extends State<LoginPage> {
     _databaseHelper = DatabaseHelper();
   }
 
-  void _login() async {
+  Future <void> _login() async {
     String username = _usernameController.text.trim();
     String password = _passwordController.text;
     prefs = await SharedPreferences.getInstance();

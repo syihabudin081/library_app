@@ -1,53 +1,47 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:stock_app/common/styles.dart';
-import 'package:stock_app/pages/bookDetail.dart';
+import 'package:stock_app/pages/book_detail.dart';
 import 'package:stock_app/service/api_service.dart';
 
 import '../models/book.dart';
 
-class BestSellerBooks extends StatefulWidget {
-  const BestSellerBooks({Key? key}) : super(key: key);
-  static const routeName = '/best_seller';
+class BookSearchPage extends StatefulWidget {
+  const BookSearchPage({Key? key}) : super(key: key);
+  static const routeName = '/book_search';
   @override
-  BestSellerBooksState createState() => BestSellerBooksState();
+  BookSearchPageState createState() => BookSearchPageState();
 }
 
-class BestSellerBooksState extends State<BestSellerBooks> {
+class BookSearchPageState extends State<BookSearchPage> {
+  final TextEditingController _searchController = TextEditingController();
   final ApiService _apiService = ApiService();
   List<Book> _books = [];
   bool _isLoading = false;
 
-  void _getBooks() async {
+  Future <void> _searchBooks(String query) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final books = await _apiService.getTopSellersBook();
+      final books = await _apiService.searchBooks(query);
       setState(() {
         _books = books;
       });
     } catch (e) {
       // Handle error here
-      print('Error: $e');
+      debugPrint('Error: $e');
     } finally {
-      if(mounted){
-        setState(() {
+      setState(() {
         _isLoading = false;
       });
-      }
     }
   }
 
   @override
-  void initState() {
-    super.initState();
-    _getBooks();
-  }
-
-  @override
   void dispose() {
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -57,15 +51,34 @@ class BestSellerBooksState extends State<BestSellerBooks> {
       backgroundColor: secondaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Best Seller Books', style: TextStyle(color: accentColor3),),
+        title: Text('Book Search', style: TextStyle(color: accentColor3),),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              style: TextStyle(color: primaryColor),
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: 'Search books',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    _searchBooks(_searchController.text);
+                  },
+                ),
+              ),
+            ),
+          ),
           if (_isLoading)
-          const Center(
-            child:  CircularProgressIndicator(),
-          )
+            const Center(
+              child: CircularProgressIndicator(),
+            )
+          else if (_books.isEmpty)
+            const Center(
+              child: Text('No books found', style: TextStyle(color: accentColor4),),
+            )
           else
             Expanded(
               child: ListView.builder(
@@ -103,4 +116,3 @@ class BestSellerBooksState extends State<BestSellerBooks> {
     );
   }
 }
-

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stock_app/pages/loginPage.dart';
-import 'package:stock_app/pages/profilePage.dart';
-import 'package:stock_app/pages/registerPage.dart';
-import 'package:stock_app/pages/homePage.dart';
+import 'package:stock_app/pages/login_page.dart';
+import 'package:stock_app/pages/profile_page.dart';
+import 'package:stock_app/pages/register_page.dart';
+import 'package:stock_app/pages/home_page.dart';
 import 'package:stock_app/common/styles.dart';
 
   void main() {

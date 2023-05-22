@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stock_app/common/styles.dart';
-import 'package:stock_app/pages/loginPage.dart';
+import 'package:stock_app/pages/login_page.dart';
 import 'package:stock_app/db/database_helper.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -30,7 +31,7 @@ class ProfilePageState extends State<ProfilePage> {
     loadProfileData();
   }
 
-  Future<void> loadProfileData() async {
+  void loadProfileData() async {
     prefs = await SharedPreferences.getInstance();
     final String? username = prefs.getString('username');
     user = await _databaseHelper.getUserByUsername(username!);
@@ -45,15 +46,17 @@ class ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future<void> saveProfileData() async {
-    if (image != null) {
-      prefs.setString('profileImagePath', image!.path);
-    } else {
-      prefs.remove('profileImagePath');
+  void saveProfileData() async {
+    if (mounted) {
+      if (image != null) {
+        await prefs.setString('profileImagePath', image!.path);
+      } else {
+        await prefs.remove('profileImagePath');
+      }
     }
   }
 
-  Future getImage(ImageSource media) async {
+  void getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
     if (mounted) {
       setState(() {
@@ -165,10 +168,12 @@ class ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                if (isEditing) {
-                  await saveProfileData();
+                if (mounted) {
+                  if (isEditing) {
+                    await saveProfileData;
+                  }
+                  toggleEdit();
                 }
-                toggleEdit();
               },
               child: Text(isEditing ? 'Save' : 'Edit'),
             ),
