@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:stock_app/pages/book_searchpage.dart';
 import 'package:stock_app/pages/homePage.dart';
 import 'package:stock_app/pages/registerPage.dart';
 import 'package:flutter_bcrypt/flutter_bcrypt.dart';
@@ -21,7 +22,7 @@ class LoginPage extends State<LoginPageState> {
 
   void _goToHomePage(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const homePage()));
+        .push(MaterialPageRoute(builder: (context) =>  BookSearchPage()));
   }
 
   Future<void> _login() async {
