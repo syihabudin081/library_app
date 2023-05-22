@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_app/common/styles.dart';
 import 'package:stock_app/models/book.dart';
 
 class BookDetailPage extends StatelessWidget {
@@ -9,20 +10,21 @@ class BookDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: accentColor3,
       appBar: AppBar(
-        title: Text(book.title),
+        title: Text(book.title, style: TextStyle(color: accentColor3),),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              book.thumbnailUrl != null && book.thumbnailUrl!.isNotEmpty
-                  ? Image.network(book.thumbnailUrl!)
-                  : const Text('No image available'),
+              book.thumbnailUrl.isNotEmpty
+                  ? Image.network(book.thumbnailUrl)
+                  : const Image(image: AssetImage('assets/images/no-thumbnail.png'),),
 
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Text(
                 'Author: ${book.author}',
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),

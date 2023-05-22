@@ -2,6 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stock_app/common/styles.dart';
+import 'package:stock_app/pages/loginPage.dart';
+import 'package:stock_app/db/database_helper.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,32 +16,36 @@ class ProfilePage extends StatefulWidget {
 class ProfilePageState extends State<ProfilePage> {
   XFile? image;
   final ImagePicker picker = ImagePicker();
-  TextEditingController nameController = TextEditingController();
-
   bool isEditing = false;
+
+  late DatabaseHelper _databaseHelper;
+  late User? user;
+  late SharedPreferences prefs;
+  String name = '';
 
   @override
   void initState() {
     super.initState();
+    _databaseHelper = DatabaseHelper();
     loadProfileData();
   }
 
   Future<void> loadProfileData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      nameController.text = prefs.getString('profileName') ?? '';
-      // Load the image path from shared preferences
-      String? imagePath = prefs.getString('profileImagePath');
-      if (imagePath != null && imagePath.isNotEmpty) {
-        image = XFile(imagePath);
-      }
-    });
+    prefs = await SharedPreferences.getInstance();
+    final String? username = prefs.getString('username');
+    user = await _databaseHelper.getUserByUsername(username!);
+    if (mounted) {
+      setState(() {
+        name = user!.name;
+        String? imagePath = prefs.getString('profileImagePath');
+        if (imagePath != null && imagePath.isNotEmpty) {
+          image = XFile(imagePath);
+        }
+      });
+    }
   }
 
   Future<void> saveProfileData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('profileName', nameController.text);
-    // Save the image path to shared preferences
     if (image != null) {
       prefs.setString('profileImagePath', image!.path);
     } else {
@@ -48,10 +55,11 @@ class ProfilePageState extends State<ProfilePage> {
 
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
-
-    setState(() {
-      image = img;
-    });
+    if (mounted) {
+      setState(() {
+        image = img;
+      });
+    }
   }
 
   void myAlert() {
@@ -106,8 +114,14 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: secondaryColor,
       appBar: AppBar(
-        title: Text('Profile'),
+        centerTitle: true,
+        title: Text(
+          'Profile',
+          style: TextStyle(color: accentColor3),
+        ),
       ),
       body: Center(
         child: Column(
@@ -144,23 +158,11 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(height: 20),
-            isEditing
-                ? SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your name',
-                        border: OutlineInputBorder(),
-                        labelText: 'Name',
-                      ),
-                    ),
-                  )
-                : Text(
-                    nameController.text,
-                    style: TextStyle(fontSize: 20),
-                  ),
-            SizedBox(height: 20),
+            Text(
+              'Hi, $name',
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 if (isEditing) {
@@ -170,6 +172,22 @@ class ProfilePageState extends State<ProfilePage> {
               },
               child: Text(isEditing ? 'Save' : 'Edit'),
             ),
+            const SizedBox(height: 64.0),
+            ElevatedButton(
+              onPressed: () async {
+                await prefs.remove('username');
+                if (mounted) {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    LoginPage.routeName,
+                  );
+                }
+              },
+              child: Text('Logout'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: accentColor1,
+              ),
+            )
           ],
         ),
       ),

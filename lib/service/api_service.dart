@@ -80,10 +80,10 @@ class ApiService {
 
         final book = Book(
           title: volumeInfo['title'] ?? '',
-          author: volumeInfo['authors']?.join(', ') ?? '',
-          description: volumeInfo['description'] ?? '',
+          author: volumeInfo['authors']?.join(', ') ?? 'Unknown author.',
+          description: volumeInfo['description'] ?? 'No description available.',
           thumbnailUrl: volumeInfo['imageLinks']?['thumbnail'] ?? '',
-          publisher: volumeInfo['publisher'] ?? '',
+          publisher: volumeInfo['publisher'] ?? 'Unknown publsher.',
           averageRating: volumeInfo['averagerating']?.toString() ?? 'Not yet rated.',
         );
 

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 const Color primaryColor = Color.fromARGB(255, 130, 148, 196);
 const Color secondaryColor = Color.fromARGB(255, 218, 221, 239);
-const Color accentColor = Color.fromARGB(255, 15, 25, 35);
+const Color accentColor1 = Color.fromARGB(255, 254, 161, 161);
+const Color accentColor2 = Color.fromARGB(255, 255, 234, 210);
+const Color accentColor3 = Color.fromARGB(255, 236, 239, 247);
+const Color accentColor4 = Color.fromARGB(255, 96, 96, 122);
 const Color successColor = Color.fromARGB(255, 95, 200, 150);
 
 MaterialColor createMaterialColor(Color color) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_app/common/styles.dart';
 import 'package:stock_app/pages/bookDetail.dart';
 import 'package:stock_app/pages/homePage.dart';
 import 'package:stock_app/service/api_service.dart';
@@ -47,14 +48,17 @@ class BookSearchPageState extends State<BookSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: secondaryColor,
       appBar: AppBar(
-        title: Text('Book Search'),
+        centerTitle: true,
+        title: Text('Book Search', style: TextStyle(color: accentColor3),),
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
+              style: TextStyle(color: primaryColor),
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: 'Search books',
@@ -73,7 +77,7 @@ class BookSearchPageState extends State<BookSearchPage> {
             )
           else if (_books.isEmpty)
             const Center(
-              child: Text('No books found'),
+              child: Text('No books found', style: TextStyle(color: accentColor4),),
             )
           else
             Expanded(
@@ -83,6 +87,7 @@ class BookSearchPageState extends State<BookSearchPage> {
                   final book = _books[index];
 
                   return Card(
+                    color: accentColor3,
                     margin: EdgeInsets.all(8.0),
                     child: ListTile(
                       leading: SizedBox(
@@ -91,8 +96,8 @@ class BookSearchPageState extends State<BookSearchPage> {
                             ? Image.network(book.thumbnailUrl)
                             : Container(),
                       ),
-                      title: Text(book.title),
-                      subtitle: Text(book.author),
+                      title: Text(book.title, style: TextStyle(color: accentColor1, fontWeight: FontWeight.bold),),
+                      subtitle: Text(book.author, style: TextStyle(fontWeight: FontWeight.bold),),
                       onTap: () {
                         // Handle book tap
                         Navigator.push(
@@ -111,4 +116,3 @@ class BookSearchPageState extends State<BookSearchPage> {
     );
   }
 }
-

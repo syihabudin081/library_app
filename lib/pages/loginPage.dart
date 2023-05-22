@@ -1,14 +1,12 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:stock_app/pages/bookSearchPage.dart';
+import 'package:stock_app/common/styles.dart';
 import 'package:stock_app/pages/homePage.dart';
-import 'package:stock_app/pages/profilePage.dart';
 import 'package:stock_app/pages/registerPage.dart';
 import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:stock_app/db/database_helper.dart';
-
-import '../models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,80 +17,75 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  bool _passwordVisible = false;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  late DatabaseHelper _databaseHelper;
+  late SharedPreferences prefs;
 
-  void _goToHomePage(BuildContext context) {
-    Navigator.pushReplacementNamed(
-      context,
-      HomePage.routeName,
-    );
+  @override
+  void initState() {
+    super.initState();
+    _databaseHelper = DatabaseHelper();
   }
 
-  Future<void> _login() async {
-    final username = usernameController.text;
-    final password = passwordController.text;
+  void _login() async {
+    String username = _usernameController.text.trim();
+    String password = _passwordController.text;
+    prefs = await SharedPreferences.getInstance();
 
-    final db = await DatabaseHelper().db;
-    final List<Map<String, dynamic>> users = await db.query(
-      'users',
-      where: 'username = ?',
-      whereArgs: [username],
-    );
-
-    if (users.isNotEmpty) {
-      final user = User.fromMap(users.first);
-      final isValidPassword = await FlutterBcrypt.verify(
-        password: password,
-        hash: user.getPassword,
-      );
-
-      if (isValidPassword) {
-        // Login successful, navigate to the home page or perform other actions.
-        // Example: Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
-        print('Login successful!');
-        _goToHomePage(context);
-      } else {
-        // Invalid password
-        print('Invalid password!');
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Login Failed'),
-            content: const Text('Wrong Username/Password.'),
-            actions: [
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
+    if (username.isEmpty || password.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Username or Password Cannot be Empty'),
+            backgroundColor: accentColor1,
+            duration: Duration(seconds: 2),
           ),
         );
       }
     } else {
-      // User not found
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Failed'),
-          content: const Text('User not found.'),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
+      User? user = await _databaseHelper.getUserByUsername(username);
+
+      if (user != null && await FlutterBcrypt.verify(password: password, hash: user.password)) {
+        await prefs.setString('username', username);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Login Success'),
+              backgroundColor: successColor,
+              duration: Duration(seconds: 2),
             ),
-          ],
-        ),
-      );
-      print('User not found!');
+          );
+          Navigator.pushReplacementNamed(
+            context,
+            HomePage.routeName,
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Login Failed'),
+              backgroundColor: accentColor1,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Login Page'),
+        centerTitle: true,
+        title: const Text(
+          'Login Page',
+          style: TextStyle(color: accentColor3),
+        ),
         automaticallyImplyLeading: false, // hide back button
       ),
       body: Center(
@@ -102,49 +95,72 @@ class LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Image(image: AssetImage('assets/images/logo.png'), width: 200,),
+                const Image(
+                  image: AssetImage('assets/images/logo.png'),
+                  width: 180,
+                ),
                 const SizedBox(height: 32.0),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: TextField(
-                    controller: usernameController,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter your username',
-                      border: OutlineInputBorder(),
-                      labelText: 'Username',
-                    ),
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter your username',
+                    border: OutlineInputBorder(),
+                    labelText: 'Username',
                   ),
+                  style: const TextStyle(color: primaryColor),
                 ),
                 const SizedBox(height: 16.0),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: TextField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter your password',
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: !_passwordVisible,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your password',
+                    border: const OutlineInputBorder(),
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
                     ),
                   ),
+                  style: const TextStyle(color: primaryColor),
                 ),
                 const SizedBox(height: 32.0),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: 100.0,
                   child: ElevatedButton(
-                    child: const Text('Login'),
                     onPressed: _login,
+                    child: const Text('Login'),
                   ),
                 ),
                 const SizedBox(height: 16.0),
                 TextButton(
-                  child: const Text('Register'),
                   onPressed: () {
                     Navigator.pushReplacementNamed(
                       context,
                       RegisterPage.routeName,
                     );
                   },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text("Don't have an account yet?",
+                          style: TextStyle(color: primaryColor)),
+                      Text(
+                        ' Register',
+                        style: TextStyle(
+                          color: accentColor1,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

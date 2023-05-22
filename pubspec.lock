@@ -145,7 +145,7 @@ packages:
     source: hosted
     version: "4.0.2"
   image_picker:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: image_picker
       sha256: "9978d3510af4e6a902e545ce19229b926e6de6a1828d6134d3aab2e129a4d270"
@@ -225,7 +225,7 @@ packages:
     source: hosted
     version: "1.8.0"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: db9d4f58c908a4ba5953fcee2ae317c94889433e5024c27ce74a37f94267945b

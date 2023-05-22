@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:stock_app/common/styles.dart';
+import 'package:stock_app/pages/bookDetail.dart';
 import 'package:stock_app/service/api_service.dart';
 import 'package:stock_app/models/book.dart';
-import 'package:card_swiper/card_swiper.dart';
 
 class BookCategories extends StatefulWidget {
   const BookCategories({Key? key}) : super(key: key);
@@ -59,8 +60,10 @@ class BookCategoriesState extends State<BookCategories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: secondaryColor,
       appBar: AppBar(
-        title: Text('Book Search'),
+        centerTitle: true,
+        title: Text('Book Categories',style: TextStyle(color: accentColor3),),
       ),
       body: Column(
         children: [
@@ -74,26 +77,41 @@ class BookCategoriesState extends State<BookCategories> {
                   ElevatedButton(
                     onPressed: () => _changeCategory('Computers'),
                     child: const Text('Computers'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: accentColor1,
+                    ),
                   ),
                   SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () => _changeCategory('Fiction'),
                     child: const Text('Fiction'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: accentColor1,
+                    ),
                   ),
                   SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () => _changeCategory('Biography'),
                     child: const Text('Biography'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: accentColor1,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () => _changeCategory('Business'),
                     child: const Text('Business'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: accentColor1,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () => _changeCategory('Entertainment'),
                     child: const Text('Entertainment'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: accentColor1,
+                    ),
                   ),
                 ],
               ),
@@ -103,7 +121,7 @@ class BookCategoriesState extends State<BookCategories> {
             CircularProgressIndicator()
           else if (_books.isEmpty)
             const Center(
-              child: Text('No books found'),
+              child: Text('No books found', style: TextStyle(color: accentColor4),),
             )
           else
             Expanded(
@@ -113,6 +131,7 @@ class BookCategoriesState extends State<BookCategories> {
                   final book = _books[index];
 
                   return Card(
+                    color: accentColor3,
                     margin: EdgeInsets.all(8.0),
                     child: ListTile(
                       leading: SizedBox(
@@ -121,10 +140,14 @@ class BookCategoriesState extends State<BookCategories> {
                             ? Image.network(book.thumbnailUrl)
                             : Container(),
                       ),
-                      title: Text(book.title),
-                      subtitle: Text(book.author),
+                      title: Text(book.title, style: TextStyle(color: accentColor1, fontWeight: FontWeight.bold),),
+                      subtitle: Text(book.author, style: TextStyle(fontWeight: FontWeight.bold),),
                       onTap: () {
-                        // Handle book tap
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BookDetailPage(book: book)));
                       },
                     ),
                   );

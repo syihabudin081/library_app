@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:stock_app/common/styles.dart';
 import 'package:stock_app/pages/bookDetail.dart';
-import 'package:stock_app/pages/homePage.dart';
 import 'package:stock_app/service/api_service.dart';
 
 import '../models/book.dart';
@@ -31,9 +32,11 @@ class BestSellerBooksState extends State<BestSellerBooks> {
       // Handle error here
       print('Error: $e');
     } finally {
-      setState(() {
+      if(mounted){
+        setState(() {
         _isLoading = false;
       });
+      }
     }
   }
 
@@ -51,8 +54,10 @@ class BestSellerBooksState extends State<BestSellerBooks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: secondaryColor,
       appBar: AppBar(
-        title: Text('Best Seller Books'),
+        centerTitle: true,
+        title: Text('Best Seller Books', style: TextStyle(color: accentColor3),),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -69,6 +74,7 @@ class BestSellerBooksState extends State<BestSellerBooks> {
                   final book = _books[index];
 
                   return Card(
+                    color: accentColor3,
                     margin: EdgeInsets.all(8.0),
                     child: ListTile(
                       leading: SizedBox(
@@ -77,8 +83,8 @@ class BestSellerBooksState extends State<BestSellerBooks> {
                             ? Image.network(book.thumbnailUrl)
                             : Container(),
                       ),
-                      title: Text(book.title),
-                      subtitle: Text(book.author),
+                      title: Text(book.title, style: TextStyle(color: accentColor1, fontWeight: FontWeight.bold),),
+                      subtitle: Text(book.author, style: TextStyle(fontWeight: FontWeight.bold),),
                       onTap: () {
                         // Handle book tap
                         Navigator.push(
