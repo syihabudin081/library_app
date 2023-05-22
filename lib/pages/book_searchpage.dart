@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_app/pages/bookDetail.dart';
 import 'package:stock_app/pages/homePage.dart';
 import 'package:stock_app/service/api_service.dart';
 
@@ -90,6 +91,11 @@ class BookSearchPageState extends State<BookSearchPage> {
                       subtitle: Text(book.author),
                       onTap: () {
                         // Handle book tap
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BookDetailPage(book: book)));
                       },
                     ),
                   );
@@ -100,7 +106,5 @@ class BookSearchPageState extends State<BookSearchPage> {
       ),
     );
   }
-
-
-
 }
+

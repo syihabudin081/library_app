@@ -24,6 +24,8 @@ class ApiService {
           author: volumeInfo['authors']?.join(', ') ?? '',
           description: volumeInfo['description'] ?? '',
           thumbnailUrl: volumeInfo['imageLinks']?['thumbnail'] ?? '',
+          publisher: volumeInfo['publisher'] ?? '',
+          averageRating: volumeInfo['averageRating']?.toString() ?? '0',
         );
 
         books.add(book);
@@ -54,6 +56,8 @@ class ApiService {
           author: volumeInfo['authors']?.join(', ') ?? '',
           description: volumeInfo['description'] ?? '',
           thumbnailUrl: volumeInfo['imageLinks']?['thumbnail'] ?? '',
+          publisher: volumeInfo['publisher'] ?? '',
+          averageRating: volumeInfo['averagerating']?.toString() ?? '0',
         );
 
         books.add(book);

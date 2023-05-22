@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:stock_app/pages/book_searchpage.dart';
 import 'package:stock_app/pages/homePage.dart';
+import 'package:stock_app/pages/profilePage.dart';
 import 'package:stock_app/pages/registerPage.dart';
 import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:stock_app/db/database_helper.dart';
