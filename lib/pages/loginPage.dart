@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:stock_app/pages/book_searchpage.dart';
+import 'package:stock_app/pages/bookSearchPage.dart';
 import 'package:stock_app/pages/homePage.dart';
 import 'package:stock_app/pages/profilePage.dart';
 import 'package:stock_app/pages/registerPage.dart';
@@ -102,7 +102,7 @@ class LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Login', style: TextStyle(fontSize: 30)),
+                const Image(image: AssetImage('assets/images/logo.png'), width: 200,),
                 const SizedBox(height: 32.0),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.7,

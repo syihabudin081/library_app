@@ -5,26 +5,25 @@ import 'package:stock_app/service/api_service.dart';
 
 import '../models/book.dart';
 
-class BookSearchPage extends StatefulWidget {
-  const BookSearchPage({Key? key}) : super(key: key);
-  static const routeName = '/book_search';
+class BestSellerBooks extends StatefulWidget {
+  const BestSellerBooks({Key? key}) : super(key: key);
+  static const routeName = '/best_seller';
   @override
-  BookSearchPageState createState() => BookSearchPageState();
+  BestSellerBooksState createState() => BestSellerBooksState();
 }
 
-class BookSearchPageState extends State<BookSearchPage> {
-  final TextEditingController _searchController = TextEditingController();
+class BestSellerBooksState extends State<BestSellerBooks> {
   final ApiService _apiService = ApiService();
   List<Book> _books = [];
   bool _isLoading = false;
 
-  void _searchBooks(String query) async {
+  void _getBooks() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final books = await _apiService.searchBooks(query);
+      final books = await _apiService.getTopSellersBook();
       setState(() {
         _books = books;
       });
@@ -39,8 +38,13 @@ class BookSearchPageState extends State<BookSearchPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _getBooks();
+  }
+
+  @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -48,29 +52,15 @@ class BookSearchPageState extends State<BookSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book Search'),
+        title: Text('Best Seller Books'),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                labelText: 'Search books',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    _searchBooks(_searchController.text);
-                  },
-                ),
-              ),
-            ),
-          ),
           if (_isLoading)
-            CircularProgressIndicator()
-          else if (_books.isEmpty)
-            Text('No books found')
+          const Center(
+            child:  CircularProgressIndicator(),
+          )
           else
             Expanded(
               child: ListView.builder(

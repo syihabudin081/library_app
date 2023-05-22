@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stock_app/pages/book_categories.dart';
-import 'package:stock_app/pages/book_searchpage.dart';
+import 'package:stock_app/pages/bestSellersBook.dart';
+import 'package:stock_app/pages/bookCategories.dart';
+import 'package:stock_app/pages/bookSearchPage.dart';
 import 'package:stock_app/common/styles.dart';
+import 'package:stock_app/pages/profilePage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,15 +17,15 @@ class _HomePageState extends State<HomePage> {
 
   final List<BottomNavigationBarItem> _bottomNavBarItems = const [
     BottomNavigationBarItem(
-      icon: Icon(Icons.star),
+      icon: Icon(Icons.search),
       label: 'Search',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.shopping_basket),
+      icon: Icon(Icons.list),
       label: 'Categories',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.access_time),
+      icon: Icon(Icons.star),
       label: 'Top Seller',
     ),
     BottomNavigationBarItem(
@@ -41,8 +43,8 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _listWidget = [
     const BookSearchPage(),
     const BookCategories(),
-    const BookSearchPage(),
-    const BookSearchPage(),
+    const BestSellerBooks(),
+    const ProfilePage(),
   ];
 
   @override

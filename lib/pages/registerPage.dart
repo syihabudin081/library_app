@@ -81,7 +81,7 @@ class RegisterPageState extends State<RegisterPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Register', style: TextStyle(fontSize: 30)),
+                  const Image(image: AssetImage('assets/images/logo.png'), width: 200,),
                   const SizedBox(height: 32.0),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.7,

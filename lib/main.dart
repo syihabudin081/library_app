@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stock_app/pages/loginPage.dart';
+import 'package:stock_app/pages/profilePage.dart';
 import 'package:stock_app/pages/registerPage.dart';
 import 'package:stock_app/pages/homePage.dart';
 import 'package:stock_app/common/styles.dart';
@@ -27,6 +28,7 @@ import 'package:stock_app/common/styles.dart';
         LoginPage.routeName: (_) => const LoginPage(),
         RegisterPage.routeName: (_) => const RegisterPage(),
         HomePage.routeName: (_) => const HomePage(),
+        ProfilePage.routeName: (_) => const ProfilePage(),
       },
     );
     }
