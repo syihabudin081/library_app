@@ -5,10 +5,10 @@ import 'package:stock_app/models/book.dart';
 
 class ApiService {
   static const String _baseUrl = 'https://www.googleapis.com/books/v1/volumes';
-  static const String api_key = "AIzaSyD_6iFIRzBVpFzRFR2mvU8jjUUWXiJaAFw";
+  static const String apiKey = "AIzaSyD_6iFIRzBVpFzRFR2mvU8jjUUWXiJaAFw";
 
   Future<List<Book>> searchBooks(String query) async {
-    final url = Uri.parse('$_baseUrl?q=$query&key=$api_key');
+    final url = Uri.parse('$_baseUrl?q=$query&key=$apiKey');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -18,8 +18,9 @@ class ApiService {
 
       for (final item in items) {
         final volumeInfo = item['volumeInfo'];
-
+        final id = item['id'];
         final book = Book(
+          id: id,
           title: volumeInfo['title'] ?? '',
           author: volumeInfo['authors']?.join(', ') ?? '',
           description: volumeInfo['description'] ?? '',
@@ -38,7 +39,7 @@ class ApiService {
   }
 
   Future<List<Book>> getBooksByCategory(String category) async {
-    final url = Uri.parse('$_baseUrl?q=subject:$category&key=$api_key');
+    final url = Uri.parse('$_baseUrl?q=subject:$category&key=$apiKey');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
@@ -48,8 +49,10 @@ class ApiService {
 
       for (final item in items) {
         final volumeInfo = item['volumeInfo'];
+         final id = item['id'];
 
         final book = Book(
+          id: id,
           title: volumeInfo['title'] ?? '',
           author: volumeInfo['authors']?.join(', ') ?? '',
           description: volumeInfo['description'] ?? '',
@@ -68,7 +71,7 @@ class ApiService {
   }
 
   Future<List<Book>> getTopSellersBook() async {
-    final url = Uri.parse('$_baseUrl?q=best sellers&key=$api_key');
+    final url = Uri.parse('$_baseUrl?q=best sellers&key=$apiKey');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
@@ -78,8 +81,10 @@ class ApiService {
 
       for (final item in items) {
         final volumeInfo = item['volumeInfo'];
+         final id = item['id'];
 
         final book = Book(
+          id: id,
           title: volumeInfo['title'] ?? '',
           author: volumeInfo['authors']?.join(', ') ?? 'Unknown author.',
           description: volumeInfo['description'] ?? 'No description available.',

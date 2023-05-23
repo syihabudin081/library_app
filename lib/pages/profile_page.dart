@@ -31,7 +31,7 @@ class ProfilePageState extends State<ProfilePage> {
     loadProfileData();
   }
 
-  void loadProfileData() async {
+  Future <void> loadProfileData() async {
     prefs = await SharedPreferences.getInstance();
     final String? username = prefs.getString('username');
     user = await _databaseHelper.getUserByUsername(username!);
@@ -46,7 +46,7 @@ class ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void saveProfileData() async {
+  Future <void> saveProfileData() async {
     if (mounted) {
       if (image != null) {
         await prefs.setString('profileImagePath', image!.path);
@@ -56,7 +56,7 @@ class ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void getImage(ImageSource media) async {
+  Future <void> getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
     if (mounted) {
       setState(() {
@@ -71,8 +71,8 @@ class ProfilePageState extends State<ProfilePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          title: Text('Please choose media to select'),
-          content: Container(
+          title: const Text('Please choose media to select'),
+          content: SizedBox(
             height: MediaQuery.of(context).size.height / 6,
             child: Column(
               children: [
@@ -82,7 +82,7 @@ class ProfilePageState extends State<ProfilePage> {
                     getImage(ImageSource.gallery);
                   },
                   child: Row(
-                    children: [
+                    children: const [
                       Icon(Icons.image),
                       Text('From Gallery'),
                     ],
@@ -94,7 +94,7 @@ class ProfilePageState extends State<ProfilePage> {
                     getImage(ImageSource.camera);
                   },
                   child: Row(
-                    children: [
+                    children: const [
                       Icon(Icons.camera),
                       Text('From Camera'),
                     ],
@@ -121,7 +121,7 @@ class ProfilePageState extends State<ProfilePage> {
       backgroundColor: secondaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Profile',
           style: TextStyle(color: accentColor3),
         ),
@@ -150,7 +150,7 @@ class ProfilePageState extends State<ProfilePage> {
                       : null,
                 ),
                 child: isEditing
-                    ? Center(
+                    ? const Center(
                         child: Icon(
                           Icons.camera_alt,
                           color: Colors.white,
@@ -160,17 +160,17 @@ class ProfilePageState extends State<ProfilePage> {
                     : null,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               'Hi, $name',
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 if (mounted) {
                   if (isEditing) {
-                    await saveProfileData;
+                    saveProfileData;
                   }
                   toggleEdit();
                 }
@@ -188,10 +188,10 @@ class ProfilePageState extends State<ProfilePage> {
                   );
                 }
               },
-              child: Text('Logout'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: accentColor1,
               ),
+              child: const Text('Logout'),
             )
           ],
         ),

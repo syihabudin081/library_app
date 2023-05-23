@@ -50,7 +50,7 @@ class BookCategoriesState extends State<BookCategories> {
       });
     } catch (e) {
       // Handle error here
-      print('Error: $e');
+      debugPrint('Error: $e');
     } finally {
       setState(() {
         _isLoading = false;
@@ -64,12 +64,12 @@ class BookCategoriesState extends State<BookCategories> {
       backgroundColor: secondaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Book Categories',style: TextStyle(color: accentColor3),),
+        title: const Text('Book Categories',style: TextStyle(color: accentColor3),),
       ),
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -77,49 +77,49 @@ class BookCategoriesState extends State<BookCategories> {
                 children: [
                   ElevatedButton(
                     onPressed: () => _changeCategory('Computers'),
-                    child: const Text('Computers'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: accentColor1,
                     ),
+                    child: const Text('Computers'),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () => _changeCategory('Fiction'),
-                    child: const Text('Fiction'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: accentColor1,
                     ),
+                    child: const Text('Fiction'),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () => _changeCategory('Biography'),
-                    child: const Text('Biography'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: accentColor1,
                     ),
+                    child: const Text('Biography'),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () => _changeCategory('Business'),
-                    child: const Text('Business'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: accentColor1,
                     ),
+                    child: const Text('Business'),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () => _changeCategory('Entertainment'),
-                    child: const Text('Entertainment'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: accentColor1,
                     ),
+                    child: const Text('Entertainment'),
                   ),
                 ],
               ),
             ),
           ),
           if (_isLoading)
-            CircularProgressIndicator()
+            const CircularProgressIndicator()
           else if (_books.isEmpty)
             const Center(
               child: Text('No books found', style: TextStyle(color: accentColor4),),
@@ -133,7 +133,7 @@ class BookCategoriesState extends State<BookCategories> {
 
                   return Card(
                     color: accentColor3,
-                    margin: EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
                     child: ListTile(
                       leading: SizedBox(
                         width: 80.0, // Provide a specific width here
@@ -141,8 +141,8 @@ class BookCategoriesState extends State<BookCategories> {
                             ? Image.network(book.thumbnailUrl)
                             : Container(),
                       ),
-                      title: Text(book.title, style: TextStyle(color: accentColor1, fontWeight: FontWeight.bold),),
-                      subtitle: Text(book.author, style: TextStyle(fontWeight: FontWeight.bold),),
+                      title: Text(book.title, style: const TextStyle(color: accentColor1, fontWeight: FontWeight.bold),),
+                      subtitle: Text(book.author, style: const TextStyle(fontWeight: FontWeight.bold),),
                       onTap: () {
                         Navigator.push(
                             context,

@@ -51,19 +51,19 @@ class BookSearchPageState extends State<BookSearchPage> {
       backgroundColor: secondaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Book Search', style: TextStyle(color: accentColor3),),
+        title: const Text('Book Search', style: TextStyle(color: accentColor3),),
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              style: TextStyle(color: primaryColor),
+              style: const TextStyle(color: primaryColor),
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: 'Search books',
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: () {
                     _searchBooks(_searchController.text);
                   },
@@ -88,7 +88,7 @@ class BookSearchPageState extends State<BookSearchPage> {
 
                   return Card(
                     color: accentColor3,
-                    margin: EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
                     child: ListTile(
                       leading: SizedBox(
                         width: 80.0, // Provide a specific width here
@@ -96,8 +96,8 @@ class BookSearchPageState extends State<BookSearchPage> {
                             ? Image.network(book.thumbnailUrl)
                             : Container(),
                       ),
-                      title: Text(book.title, style: TextStyle(color: accentColor1, fontWeight: FontWeight.bold),),
-                      subtitle: Text(book.author, style: TextStyle(fontWeight: FontWeight.bold),),
+                      title: Text(book.title, style: const TextStyle(color: accentColor1, fontWeight: FontWeight.bold),),
+                      subtitle: Text(book.author, style: const TextStyle(fontWeight: FontWeight.bold),),
                       onTap: () {
                         // Handle book tap
                         Navigator.push(

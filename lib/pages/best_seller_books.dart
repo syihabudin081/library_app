@@ -32,7 +32,7 @@ class BestSellerBooksState extends State<BestSellerBooks> {
       }
     } catch (e) {
       // Handle error here
-      print('Error: $e');
+      debugPrint('Error: $e');
     } finally {
       if(mounted){
         setState(() {
@@ -59,7 +59,7 @@ class BestSellerBooksState extends State<BestSellerBooks> {
       backgroundColor: secondaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Best Seller Books', style: TextStyle(color: accentColor3),),
+        title: const Text('Best Seller Books', style: TextStyle(color: accentColor3),),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -77,7 +77,7 @@ class BestSellerBooksState extends State<BestSellerBooks> {
 
                   return Card(
                     color: accentColor3,
-                    margin: EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
                     child: ListTile(
                       leading: SizedBox(
                         width: 80.0, // Provide a specific width here
@@ -85,8 +85,8 @@ class BestSellerBooksState extends State<BestSellerBooks> {
                             ? Image.network(book.thumbnailUrl)
                             : Container(),
                       ),
-                      title: Text(book.title, style: TextStyle(color: accentColor1, fontWeight: FontWeight.bold),),
-                      subtitle: Text(book.author, style: TextStyle(fontWeight: FontWeight.bold),),
+                      title: Text(book.title, style: const TextStyle(color: accentColor1, fontWeight: FontWeight.bold),),
+                      subtitle: Text(book.author, style: const TextStyle(fontWeight: FontWeight.bold),),
                       onTap: () {
                         // Handle book tap
                         Navigator.push(
